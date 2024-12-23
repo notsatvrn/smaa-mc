@@ -21,5 +21,5 @@ const vec2 workGroupsRender = vec2(1.0, 1.0);
 
 /*
 	const bool colortex0Clear = false;
-	const int colortex0Format = RGB16_A2;
+	const int colortex0Format = RGBA16;
 */

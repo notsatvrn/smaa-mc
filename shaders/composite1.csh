@@ -1,8 +1,8 @@
 #include "/lib/core.glsl"
 
-uniform layout(rgba8) restrict writeonly image2D blendWeight;
-uniform sampler2D areatex, edgeS, searchtex;
 uniform vec2 pixSize;
+uniform sampler2D areatex, edgeS, searchtex;
+uniform layout(rgba8) restrict writeonly image2D blendWeight;
 
 #if SMAA_SEARCH_DIAG
 	vec2 decode_diag_bilinear_access(vec2 e) {

@@ -1,8 +1,8 @@
 #include "/lib/core.glsl"
 
-uniform layout(rgba16) restrict writeonly image2D colorimg0;
-uniform sampler2D blendWeightS, tempColS;
 uniform vec2 pixSize;
+uniform sampler2D blendWeightS, tempColS;
+uniform layout(rgba16) restrict writeonly image2D colorimg0;
 
 #include "/lib/srgb.glsl"
 
