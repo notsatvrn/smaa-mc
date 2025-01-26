@@ -27,10 +27,10 @@ void main() {
 		vec2 blending_weight = h ? a.xz : a.yw;
 		blending_weight /= dot(blending_weight, vec2(1.0));
 
-		immut vec4 blending_coord = fma(blending_offset, vec4(pixSize, -pixSize), ((texel + 0.5) * pixSize).xyxy);
+		immut vec2 coord = fma(vec2(texel), pixSize, 0.5 * pixSize);
 
-		color = blending_weight.x * textureLod(tempColS, blending_coord.xy, 0.0).rgb;
-		color += blending_weight.y * textureLod(tempColS, blending_coord.zw, 0.0).rgb;
+		color = blending_weight.x * textureLod(tempColS, fma(blending_offset.xy, pixSize, coord), 0.0).rgb;
+		color += blending_weight.y * textureLod(tempColS, fma(blending_offset.zw, -pixSize, coord), 0.0).rgb;
 	}
 
 	#if DEBUG_BW

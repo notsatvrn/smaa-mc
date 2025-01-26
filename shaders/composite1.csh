@@ -7,12 +7,12 @@ uniform layout(rgba8) restrict writeonly image2D blendWeight;
 #if SMAA_SEARCH_DIAG
 	vec2 decode_diag_bilinear_access(vec2 e) {
 		e.x *= abs(fma(e.x, 5.0, -3.75));
-		return round(e);
+		return roundEven(e);
 	}
 
 	vec4 decode_diag_bilinear_access(vec4 e) {
 		e.xz *= abs(fma(e.xz, vec2(5.0), vec2(-3.75)));
-		return round(e);
+		return roundEven(e);
 	}
 
 	vec2 area_diag(vec2 dist, vec2 e) {
@@ -96,7 +96,7 @@ uniform layout(rgba8) restrict writeonly image2D blendWeight;
 
 vec2 area(vec2 dist, float e1, float e2) {
 	return textureLod(areatex, fma(
-		fma(round(4.0 * vec2(e1, e2)), vec2(16.0), dist),
+		fma(roundEven(4.0 * vec2(e1, e2)), vec2(16.0), dist),
 		1.0 / vec2(160.0, 560.0),
 		0.5 / vec2(160.0, 560.0)
 	), 0.0).rg;
@@ -193,7 +193,7 @@ void main() {
 
 		immut vec4 offsets_0 = fma(pixSize.xyxy, vec4(-0.250, -0.125, 1.250, -0.125), coord.xyxy);
 		immut vec4 offsets_1 = fma(pixSize.xyxy, vec4(-0.125, -0.250, -0.125, 1.250), coord.xyxy);
-		immut vec4 offsets_2 = fma(pixSize.xxyy, vec4(-2.0, 2.0, -2.0, 2.0) * float(SMAA_SEARCH), vec4(offsets_0.xz, offsets_1.yw));
+		immut vec4 offsets_2 = fma(pixSize.xxyy, vec4(ivec4(-2, 2, -2, 2) * SMAA_SEARCH), vec4(offsets_0.xz, offsets_1.yw));
 
 		vec4 weights = vec4(0.0);
 
@@ -207,7 +207,7 @@ void main() {
 
 					immut float e1 = textureLod(edgeS, offset_coord.xy, 0.0).r;
 					immut float e2 = textureLodOffset(edgeS, offset_coord.zy, 0.0, ivec2(1, 0)).r;
-					immut vec2 dist = abs(round(fma(offset_coord.xz, vec2(1.0 / pixSize.x), -texel_coord.xx)));
+					immut vec2 dist = abs(roundEven(fma(offset_coord.xz, vec2(1.0 / pixSize.x), -texel_coord.xx)));
 
 					weights.xy = area(sqrt(dist), e1, e2);
 
@@ -224,7 +224,7 @@ void main() {
 
 			immut float e1 = textureLod(edgeS, offset_coord.xy, 0.0).g;
 			immut float e2 = textureLodOffset(edgeS, offset_coord.xz, 0.0, ivec2(0, 1)).g;
-			immut vec2 dist = abs(round(fma(offset_coord.yz, vec2(1.0 / pixSize.y), -texel_coord.yy)));
+			immut vec2 dist = abs(roundEven(fma(offset_coord.yz, vec2(1.0 / pixSize.y), -texel_coord.yy)));
 
 			weights.zw = area(sqrt(dist), e1, e2);
 
