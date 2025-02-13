@@ -51,7 +51,7 @@ void main() {
 		delta_max = max(delta_max.xy, delta.zw);
 
 		const float local_contrast_adaption_factor = 2.0;
-		immut bvec2 result = edges && greaterThanEqual(delta.xy, vec2(max(delta_max.x, delta_max.y) / local_contrast_adaption_factor));
+		immut bvec2 result = bvec2(ivec2(edges) & ivec2(greaterThanEqual(delta.xy, vec2(max(delta_max.x, delta_max.y) / local_contrast_adaption_factor))));
 
 		if (any(result)) imageStore(edge, texel, vec4(
 			result, 0.0, 0.0
